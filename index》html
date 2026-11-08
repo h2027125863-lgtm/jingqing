@@ -1,0 +1,800 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>2025年消防警情动态图</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+body {
+  font-family: "Microsoft YaHei",
+    "PingFang SC", sans-serif;
+}
+
+#stage {
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  touch-action: pan-y;
+}
+
+svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+}
+
+/* 顶部数字 */
+.total {
+  font-family: Georgia, serif;
+  font-size: 64px;
+  fill: #e5e8e6;
+  text-anchor: middle;
+}
+
+.unit {
+  font-size: 28px;
+  fill: #cad6d2;
+}
+
+/* 装饰线 */
+.rule {
+  fill: none;
+  stroke: #b7cbc9;
+  stroke-width: 2;
+  stroke-opacity: 0.7;
+}
+
+/* 两段条形 */
+.part {
+  transition:
+    opacity 0.3s ease,
+    filter 0.3s ease;
+}
+
+.part.active {
+  filter:
+    brightness(1.18)
+    drop-shadow(
+      0 0 12px rgba(224,224,200,.4)
+    );
+}
+
+.part.dim {
+  opacity: 0.65;
+}
+
+/* 数字 */
+.inside {
+  fill: #f8f2ea;
+  font-size: 46px;
+  font-weight: 600;
+  text-anchor: middle;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  pointer-events: none;
+}
+
+.inside.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 交互区域 */
+.hit {
+  fill: transparent;
+  cursor: pointer;
+  pointer-events: all;
+}
+
+/* 悬停说明 */
+#details {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+  pointer-events: none;
+}
+
+#details.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#detailLine {
+  fill: none;
+  stroke: #e3d8c2;
+  stroke-width: 2;
+}
+
+#detailDot {
+  fill: #e3d8c2;
+}
+
+#detailName {
+  fill: #e3ece9;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+#detailNumber {
+  fill: #e9dfd0;
+  font-size: 25px;
+}
+
+#instruction {
+  fill: #b5c8c7;
+  font-size: 18px;
+  letter-spacing: 2px;
+  opacity: 0.72;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .part, .inside, #details {
+    transition: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="stage">
+
+<svg
+  viewBox="0 0 1200 500"
+  xmlns="http://www.w3.org/2000/svg"
+  preserveAspectRatio="xMidYMid meet"
+>
+
+<defs>
+
+  <!-- 淡蓝绿色渐变 -->
+  <linearGradient
+    id="teal"
+    x1="0" y1="0"
+    x2="1" y2="1"
+  >
+    <stop offset="0%"
+      stop-color="#8BB8B1"/>
+    <stop offset="55%"
+      stop-color="#78A8A4"/>
+    <stop offset="100%"
+      stop-color="#699694"/>
+  </linearGradient>
+
+  <!-- 淡橙色渐变 -->
+  <linearGradient
+    id="sand"
+    x1="0" y1="0"
+    x2="1" y2="1"
+  >
+    <stop offset="0%"
+      stop-color="#E8CCAA"/>
+    <stop offset="55%"
+      stop-color="#D8B591"/>
+    <stop offset="100%"
+      stop-color="#C7A17D"/>
+  </linearGradient>
+
+  <!-- 整体圆角裁切 -->
+  <clipPath id="barShape">
+    <rect
+      x="74"
+      y="225"
+      width="1052"
+      height="102"
+      rx="22"
+    />
+  </clipPath>
+
+  <!-- 动态展开裁切 -->
+  <clipPath id="sweep">
+    <rect
+      id="sweepRect"
+      x="74"
+      y="220"
+      width="0"
+      height="112"
+    />
+  </clipPath>
+
+</defs>
+
+<!-- 顶部数字 -->
+
+<path
+  class="rule"
+  d="M75 178 V161 Q75 147 90 147 H480"
+/>
+
+<path
+  class="rule"
+  d="M720 147 H1111 Q1126 147 1126 161 V178"
+/>
+
+<text
+  class="total"
+  x="600"
+  y="160"
+>
+  244.4
+  <tspan class="unit">万起</tspan>
+</text>
+
+<!-- 横向条形边框 -->
+
+<rect
+  x="74"
+  y="225"
+  width="1052"
+  height="102"
+  rx="22"
+  fill="none"
+  stroke="#b8c9c7"
+  stroke-width="2"
+  stroke-opacity=".4"
+/>
+
+<!-- 逐渐展开的两个色块 -->
+
+<g clip-path="url(#barShape)">
+
+  <g clip-path="url(#sweep)">
+
+    <!-- 火灾扑救：34.2% -->
+    <rect
+      id="partFire"
+      class="part"
+      x="74"
+      y="225"
+      width="360.257"
+      height="102"
+      fill="url(#teal)"
+    />
+
+    <!-- 其他警情：65.8% -->
+    <rect
+      id="partOther"
+      class="part"
+      x="434.257"
+      y="225"
+      width="691.743"
+      height="102"
+      fill="url(#sand)"
+    />
+
+    <!-- 分类分隔线 -->
+    <line
+      x1="434.257"
+      y1="225"
+      x2="434.257"
+      y2="327"
+      stroke="#f7e8d6"
+      stroke-width="2"
+      stroke-opacity=".75"
+    />
+
+  </g>
+
+</g>
+
+<!-- 色块内部数字 -->
+
+<text
+  class="inside"
+  id="inFire"
+  x="254"
+  y="292"
+>
+  83.7
+  <tspan font-size="26">万</tspan>
+</text>
+
+<text
+  class="inside"
+  id="inOther"
+  x="780"
+  y="292"
+>
+  160.7
+  <tspan font-size="26">万</tspan>
+</text>
+
+<!-- 透明鼠标交互区 -->
+
+<rect
+  class="hit"
+  id="hitFire"
+  x="74"
+  y="225"
+  width="360.257"
+  height="102"
+/>
+
+<rect
+  class="hit"
+  id="hitOther"
+  x="434.257"
+  y="225"
+  width="691.743"
+  height="102"
+/>
+
+<!-- 鼠标悬停数据详情 -->
+
+<g id="details">
+
+  <path
+    id="detailLine"
+    d=""
+  />
+
+  <circle
+    id="detailDot"
+    cx="0"
+    cy="0"
+    r="4"
+  />
+
+  <text
+    id="detailName"
+    x="130"
+    y="397"
+  >
+    火灾扑救警情
+  </text>
+
+  <text
+    id="detailNumber"
+    x="130"
+    y="435"
+  >
+    83.7万起 · 占34.2%
+  </text>
+
+</g>
+
+<!-- 操作提示 -->
+
+<text
+  id="instruction"
+  x="600"
+  y="427"
+  text-anchor="middle"
+>
+  悬停色块查看数据 · 点击空白处重播
+</text>
+
+</svg>
+
+</div>
+
+<script>
+(() => {
+
+  "use strict";
+
+  // =============================
+  // 一、获取网页元素
+  // =============================
+
+  const stage =
+    document.getElementById("stage");
+
+  const sweep =
+    document.getElementById("sweepRect");
+
+  const fire =
+    document.getElementById("partFire");
+
+  const other =
+    document.getElementById("partOther");
+
+  const inFire =
+    document.getElementById("inFire");
+
+  const inOther =
+    document.getElementById("inOther");
+
+  const detail =
+    document.getElementById("details");
+
+  const detailLine =
+    document.getElementById("detailLine");
+
+  const detailDot =
+    document.getElementById("detailDot");
+
+  const detailName =
+    document.getElementById("detailName");
+
+  const detailNumber =
+    document.getElementById("detailNumber");
+
+  const instruction =
+    document.getElementById("instruction");
+
+  const hitFire =
+    document.getElementById("hitFire");
+
+  const hitOther =
+    document.getElementById("hitOther");
+
+  // =============================
+  // 二、2025年数据
+  // =============================
+
+  const DATA = [
+    {
+      name: "火灾扑救警情",
+      amount: "83.7万起",
+      pct: "34.2%",
+      center: 254,
+      textX: 130,
+      lineEndX: 125,
+      color: "#9BC7BD"
+    },
+    {
+      name: "其他警情",
+      amount: "160.7万起",
+      pct: "65.8%",
+      center: 780,
+      textX: 700,
+      lineEndX: 695,
+      color: "#E1BC94"
+    }
+  ];
+
+  // =============================
+  // 三、动画状态
+  // =============================
+
+  let state = "idle";
+
+  let raf = null;
+
+  let selected = -1;
+
+  // =============================
+  // 四、重置动画
+  // =============================
+
+  function reset() {
+
+    if (raf !== null) {
+      cancelAnimationFrame(raf);
+    }
+
+    state = "idle";
+    selected = -1;
+
+    sweep.setAttribute(
+      "width", "0"
+    );
+
+    inFire.classList.remove("show");
+    inOther.classList.remove("show");
+
+    fire.classList.remove(
+      "active", "dim"
+    );
+
+    other.classList.remove(
+      "active", "dim"
+    );
+
+    detail.classList.remove("show");
+
+    instruction.style.opacity = ".72";
+  }
+
+  // =============================
+  // 五、横向生长动画
+  // =============================
+
+  function run() {
+
+    if (state === "running") {
+      return;
+    }
+
+    reset();
+
+    state = "running";
+
+    const duration = 2250;
+
+    let start = null;
+
+    const reduceMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+    if (reduceMotion) {
+      finish();
+      return;
+    }
+
+    function animate(now) {
+
+      if (start === null) {
+        start = now;
+      }
+
+      const progress = Math.min(
+        1,
+        (now - start) / duration
+      );
+
+      // 缓入缓出
+      const eased = progress < 0.5
+        ? 2 * progress * progress
+        : 1 - Math.pow(
+            -2 * progress + 2, 2
+          ) / 2;
+
+      // 从左向右展开
+      const width = 1052 * eased;
+
+      sweep.setAttribute(
+        "width",
+        String(width)
+      );
+
+      // 第一组数字出现
+      if (progress >= 0.34) {
+        inFire.classList.add("show");
+      }
+
+      // 第二组数字出现
+      if (progress >= 0.85) {
+        inOther.classList.add("show");
+      }
+
+      if (progress < 1) {
+        raf = requestAnimationFrame(
+          animate
+        );
+      } else {
+        finish();
+      }
+
+    }
+
+    raf = requestAnimationFrame(
+      animate
+    );
+
+  }
+
+  // =============================
+  // 六、动画完成
+  // =============================
+
+  function finish() {
+
+    sweep.setAttribute(
+      "width", "1052"
+    );
+
+    inFire.classList.add("show");
+    inOther.classList.add("show");
+
+    state = "done";
+
+  }
+
+  // =============================
+  // 七、鼠标悬停显示数据
+  // =============================
+
+  function showDetail(id) {
+
+    if (state !== "done") {
+      return;
+    }
+
+    selected = id;
+
+    const d = DATA[id];
+
+    // 当前区域高亮
+    fire.classList.toggle(
+      "active", id === 0
+    );
+
+    other.classList.toggle(
+      "active", id === 1
+    );
+
+    // 其他区域弱化
+    fire.classList.toggle(
+      "dim", id !== 0
+    );
+
+    other.classList.toggle(
+      "dim", id !== 1
+    );
+
+    // 引导线
+    detailLine.setAttribute(
+      "d",
+      `M ${d.center} 333
+       V 362
+       Q ${d.center} 373
+         ${d.center - 13} 373
+       H ${d.lineEndX}`
+    );
+
+    detailLine.style.stroke =
+      d.color;
+
+    // 引导点
+    detailDot.setAttribute(
+      "cx", d.center
+    );
+
+    detailDot.setAttribute(
+      "cy", 333
+    );
+
+    detailDot.style.fill =
+      d.color;
+
+    // 分类名称
+    detailName.setAttribute(
+      "x", d.textX
+    );
+
+    detailName.textContent =
+      d.name;
+
+    // 数字与占比
+    detailNumber.setAttribute(
+      "x", d.textX
+    );
+
+    detailNumber.textContent =
+      d.amount + " · 占全部警情 " + d.pct;
+
+    detail.classList.add("show");
+
+    instruction.style.opacity = "0";
+  }
+
+  // =============================
+  // 八、取消悬停
+  // =============================
+
+  function hideDetail(id) {
+
+    if (selected !== id) {
+      return;
+    }
+
+    selected = -1;
+
+    fire.classList.remove(
+      "active", "dim"
+    );
+
+    other.classList.remove(
+      "active", "dim"
+    );
+
+    detail.classList.remove("show");
+
+    instruction.style.opacity = ".72";
+  }
+
+  // =============================
+  // 九、鼠标与手机交互
+  // =============================
+
+  // 鼠标移入整个图表：启动动画
+  stage.addEventListener(
+    "pointerenter",
+    () => {
+      if (state === "idle") {
+        run();
+      }
+    }
+  );
+
+  // 点击空白区域：重新播放
+  stage.addEventListener(
+    "pointerdown",
+    (event) => {
+
+      if (event.target.classList
+          ?.contains("hit")) {
+        return;
+      }
+
+      if (state !== "running") {
+        run();
+      }
+
+    }
+  );
+
+  // 第一组悬停
+  hitFire.addEventListener(
+    "pointerenter",
+    () => showDetail(0)
+  );
+
+  hitFire.addEventListener(
+    "pointerleave",
+    () => hideDetail(0)
+  );
+
+  // 第二组悬停
+  hitOther.addEventListener(
+    "pointerenter",
+    () => showDetail(1)
+  );
+
+  hitOther.addEventListener(
+    "pointerleave",
+    () => hideDetail(1)
+  );
+
+  // 手机点击
+  hitFire.addEventListener(
+    "pointerdown",
+    (event) => {
+      event.stopPropagation();
+
+      if (state === "idle") {
+        run();
+      } else {
+        showDetail(0);
+      }
+    }
+  );
+
+  hitOther.addEventListener(
+    "pointerdown",
+    (event) => {
+      event.stopPropagation();
+
+      if (state === "idle") {
+        run();
+      } else {
+        showDetail(1);
+      }
+    }
+  );
+
+  // 初始化
+  reset();
+
+})();
+</script>
+
+</body>
+</html>
